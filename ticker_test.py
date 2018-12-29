@@ -10,7 +10,9 @@ from pyemojify import emojify
 
 class mvg_ticker(object):
     def __init__(self):
+        print(' ')
         print(emojify(':train: :boom: This is the MVG ticker!:boom: :train:'))
+        print(' ')
         self.station_name = None
         self.station = None
         self.departures = None
@@ -21,6 +23,7 @@ class mvg_ticker(object):
 
     def set_station(self,station_name):
         self.station_name = station_name
+        print('Departure station is: ',self.station_name)
 
     def set_mvg(self):
         try:
@@ -44,9 +47,16 @@ class mvg_ticker(object):
             label = self.departures[i]['label']
 
             if departure_times < 1:
-                destination = self.departures[i+nr]['destination']
-                departure_times = self.departures[i+nr]['departureTimeMinutes']
-                label = self.departures[i+nr]['label']
+                try:
+                    destination = self.departures[i+nr]['destination']
+                    departure_times = self.departures[i+nr]['departureTimeMinutes']
+                    label = self.departures[i+nr]['label']
+                except IndexError:
+                    pass
 
-            out_text = label+' to '+destination+ ' in: '+ str(departure_times)+'min.'
+            out_text = label+' to '+destination+ ' in: '+ str(departure_times)+' min.'
             print(out_text)
+
+if __name__ == '__main__':
+    ticker = mvg_ticker()
+    ticker.get_departures_times()
