@@ -7,6 +7,7 @@ import numpy as np
 import time
 import mvg_api as mvg
 from pyemojify import emojify
+from colr import color
 
 class mvg_ticker(object):
     def __init__(self):
@@ -45,16 +46,22 @@ class mvg_ticker(object):
             destination = self.departures[i]['destination']
             departure_times = self.departures[i]['departureTimeMinutes']
             label = self.departures[i]['label']
+            back_color = self.departures[i]['lineBackgroundColor'][-7:]
+            label_color = color(label, fore="#fff", back=back_color)
 
+            '''
             if departure_times < 1:
                 try:
                     destination = self.departures[i+nr]['destination']
                     departure_times = self.departures[i+nr]['departureTimeMinutes']
                     label = self.departures[i+nr]['label']
+                    back_color = self.departures[i+nr]['lineBackgroundColor']
+                    label_color = color(label, fore="#fff", back=back_color)
                 except IndexError:
                     pass
+            '''
 
-            out_text = label+' to '+destination+ ' in: '+ str(departure_times)+' min.'
+            out_text = label_color+' to '+destination+ ' in:\t'+ str(departure_times)+' min.'
             print(out_text)
 
 if __name__ == '__main__':
