@@ -12,18 +12,19 @@ from colr import color
 class mvg_ticker(object):
     def __init__(self):
         print(' ')
-        print(emojify(':train: :boom: This is the MVG ticker!:boom: :train:'))
+        print(emojify(':train: :boom: This is the MVG ticker!:boom: :train: :skull:'))
         print(' ')
         self.station_name = None
         self.station = None
         self.departures = None
 
-        var = 'Theresienstraße'#input("Please enter the station name: ")
-        self.set_station(var)
-        self.set_mvg()
+        name = 'Theresienstrasse'
+        self.set_station(name)
+
 
     def set_station(self,station_name):
         self.station_name = station_name
+        self.set_mvg()
         print('Departure station is: ',self.station_name)
 
     def set_mvg(self):
@@ -32,13 +33,11 @@ class mvg_ticker(object):
         except NameError:
             print('I don´t know this station!')
 
-    def get_departures_times(self, nr = 4):
-        self.departures = self.station.get_departures()[:nr]
+    def get_departures_times(self, station_name,nr = 4):
 
-        # set empty array
-        #destination = np.zeros(nr)
-        #departure_times = np.zeros(nr)
-        #time_diff_min = []
+        self.set_station(station_name=station_name)
+
+        self.departures = self.station.get_departures()[:nr]
 
         this_time = time.time()
 
@@ -49,7 +48,6 @@ class mvg_ticker(object):
             back_color = self.departures[i]['lineBackgroundColor'][-7:]
             label_color = color(label, fore="#fff", back=back_color)
 
-            '''
             if departure_times < 1:
                 try:
                     destination = self.departures[i+nr]['destination']
@@ -57,13 +55,20 @@ class mvg_ticker(object):
                     label = self.departures[i+nr]['label']
                     back_color = self.departures[i+nr]['lineBackgroundColor']
                     label_color = color(label, fore="#fff", back=back_color)
-                except IndexError:
-                    pass
-            '''
 
-            out_text = label_color+' to '+destination+ ' in:\t'+ str(departure_times)+' min.'
-            print(out_text)
+                    out_text = label_color + ' to ' + destination + ' in:\t' + str(departure_times) + ' min.'
+                    print(out_text)
+
+                except IndexError:
+                    print('Index Error')
+                    pass
+            elif departure_times > 100:
+                pass
+            else:
+                out_text = label_color + ' to ' + destination + ' in:\t' + str(departure_times) + ' min.'
+                print(out_text)
+
 
 if __name__ == '__main__':
     ticker = mvg_ticker()
-    ticker.get_departures_times()
+    ticker.get_departures_times(station_name='Theresienstrasse',nr = 4)
